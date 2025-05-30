@@ -1,5 +1,5 @@
 // --- Konfigurasi ---
-const targetDate = new Date(2025, 4, 2, 10, 0, 0).getTime(); // 2 Juni 2025, 10:00:00
+const targetDate = new Date(2025, 5, 2, 10, 0, 0).getTime(); // 2 Juni 2025, 10:00:00 (Bulan 5 adalah Juni)
 const studentDataFilePath = 'datasiswa.txt'; // Nama file data siswa
 
 // --- Elemen DOM ---
@@ -13,52 +13,59 @@ const studentsListEl = document.getElementById('students-list');
 const searchInputEl = document.getElementById('search-input');
 
 let allStudentsData = []; // Akan menyimpan data siswa yang sudah diparsing
+let countdownInterval; // Deklarasi variabel interval di scope yang lebih luas
 
 // --- Fungsi untuk Memuat dan Mem-parsing Data Siswa dari .txt ---
 async function loadAndParseStudentData(filePath) {
     try {
         const response = await fetch(filePath);
         if (!response.ok) {
-            // Jika file tidak ditemukan atau ada error server
-            throw new Error(`Gagal memuat file data: ${response.status} ${response.statusText}. Pastikan file '${filePath}' ada di tempat yang benar.`);
+            throw new Error(`Gagal memuat file data: ${response.status} ${response.statusText}. Pastikan file '${filePath}' ada dan dapat diakses.`);
         }
         const textData = await response.text();
         const lines = textData.trim().split('\n');
         const students = [];
 
-        if (lines.length <= 1 && lines[0].trim() === "") { // File kosong
+        if (lines.length === 0 || (lines.length === 1 && lines[0].trim() === "")) {
              console.warn(`File data siswa '${filePath}' kosong.`);
-             studentsListEl.innerHTML = `<tr><td colspan="3" style="text-align:center;">File data siswa (${filePath}) kosong atau tidak valid.</td></tr>`;
+             studentsListEl.innerHTML = `<tr><td colspan="3" style="text-align:center;">File data siswa (${filePath}) kosong.</td></tr>`;
              return [];
         }
-        if (lines.length <=1 ) { // Hanya header atau file tidak valid
-            console.warn(`File data siswa '${filePath}' hanya berisi header atau formatnya tidak sesuai.`);
-            studentsListEl.innerHTML = `<tr><td colspan="3" style="text-align:center;">File data siswa (${filePath}) kosong atau tidak valid.</td></tr>`;
-            return [];
-        }
+        
+        // Cek apakah baris pertama adalah header yang diharapkan (opsional, tapi baik)
+        // const header = lines[0].trim().toLowerCase();
+        // if (header !== "nama,status") {
+        //     console.warn(`Header file '${filePath}' tidak sesuai. Diharapkan 'Nama,Status'.`);
+        // }
 
+        // Mulai dari baris pertama jika tidak ada header khusus atau baris ke-2 jika ada header
+        const startIndex = (lines[0].toLowerCase().includes('nama') && lines[0].toLowerCase().includes('status')) ? 1 : 0;
 
-        // Lewati baris header (lines[0])
-        for (let i = 1; i < lines.length; i++) {
+        for (let i = startIndex; i < lines.length; i++) {
             const line = lines[i].trim();
-            if (line) { // Pastikan baris tidak kosong
+            if (line) { 
                 const parts = line.split(',');
                 if (parts.length === 2) {
                     students.push({
-                        no: i, // Nomor urut berdasarkan baris (setelah header)
+                        no: students.length + 1, // Nomor urut berdasarkan jumlah siswa valid
                         name: parts[0].trim(),
-                        status: parts[1].trim().toUpperCase() // Standarisasi status ke huruf besar
+                        status: parts[1].trim().toUpperCase() 
                     });
                 } else {
                     console.warn(`Baris data tidak valid di '${filePath}' (baris ${i + 1}): ${line}. Format seharusnya 'Nama,Status'.`);
                 }
             }
         }
+        if (students.length === 0 && lines.length > 0 && startIndex === 1) {
+             studentsListEl.innerHTML = `<tr><td colspan="3" style="text-align:center;">Tidak ada data siswa valid setelah header di file (${filePath}).</td></tr>`;
+        } else if (students.length === 0 && lines.length > 0 && startIndex === 0) {
+             studentsListEl.innerHTML = `<tr><td colspan="3" style="text-align:center;">Tidak ada data siswa valid di file (${filePath}).</td></tr>`;
+        }
         return students;
     } catch (error) {
         console.error("Error saat memuat atau mem-parsing data siswa:", error);
-        studentsListEl.innerHTML = `<tr><td colspan="3" style="color:red; text-align:center;">Terjadi kesalahan saat memuat data siswa: ${error.message}</td></tr>`;
-        return []; // Kembalikan array kosong jika terjadi error
+        studentsListEl.innerHTML = `<tr><td colspan="3" style="color:red; text-align:center;">Terjadi kesalahan: ${error.message}</td></tr>`;
+        return []; 
     }
 }
 
@@ -69,7 +76,7 @@ function updateCountdown() {
 
     if (distance < 0) {
         clearInterval(countdownInterval);
-        showAnnouncement(); // Panggil showAnnouncement yang sekarang async
+        showAnnouncement(); 
         return;
     }
 
@@ -89,8 +96,7 @@ async function showAnnouncement() {
     countdownSection.style.display = 'none';
     announcementSection.style.display = 'block';
 
-    // Muat data siswa jika belum dimuat
-    if (allStudentsData.length === 0) {
+    if (allStudentsData.length === 0) { // Hanya muat jika belum ada data (misal halaman dimuat pas waktu pengumuman)
         allStudentsData = await loadAndParseStudentData(studentDataFilePath);
     }
     renderStudentsTable(allStudentsData);
@@ -98,19 +104,17 @@ async function showAnnouncement() {
 
 // --- Fungsi untuk Merender Tabel Siswa ---
 function renderStudentsTable(students) {
-    studentsListEl.innerHTML = ''; // Kosongkan tabel sebelum diisi
+    studentsListEl.innerHTML = ''; 
 
     if (!students || students.length === 0) {
-        // Pesan error spesifik sudah ditangani di loadAndParseStudentData
-        // atau tampilkan pesan jika hasil filter kosong
         if (searchInputEl.value !== "" && students.length === 0) {
              studentsListEl.innerHTML = `<tr><td colspan="3" style="text-align:center;">Tidak ada siswa yang cocok dengan pencarian '${searchInputEl.value}'.</td></tr>`;
-        } else if (students.length === 0 && allStudentsData.length > 0) {
-            // Ini tidak seharusnya terjadi jika allStudentsData ada isinya dan tidak difilter,
-            // tapi sebagai fallback jika students adalah array kosong karena alasan lain.
-             studentsListEl.innerHTML = `<tr><td colspan="3" style="text-align:center;">Tidak ada data siswa untuk ditampilkan.</td></tr>`;
+        } else if (allStudentsData.length > 0 && students.length === 0 && searchInputEl.value === "") {
+             // Ini seharusnya tidak terjadi jika allStudentsData ada isinya dan tidak difilter,
+             // tapi sebagai fallback jika students adalah array kosong karena alasan lain.
+             studentsListEl.innerHTML = `<tr><td colspan="3" style="text-align:center;">Tidak ada data siswa untuk ditampilkan saat ini.</td></tr>`;
         }
-        // Jika allStudentsData memang kosong dari awal karena file error/kosong, pesan sudah ada.
+        // Jika allStudentsData memang kosong dari awal karena file error/kosong, pesan sudah ada dari loadAndParseStudentData.
         return;
     }
 
@@ -119,11 +123,11 @@ function renderStudentsTable(students) {
         row.insertCell().textContent = student.no;
         row.insertCell().textContent = student.name;
         const statusCell = row.insertCell();
-        statusCell.textContent = student.status; // Status sudah di uppercase
+        statusCell.textContent = student.status; 
         if (student.status === "LULUS") {
             statusCell.style.color = "green";
             statusCell.style.fontWeight = "bold";
-        } else { // Asumsi selain LULUS adalah TIDAK LULUS atau status lain yang diberi warna merah
+        } else { 
             statusCell.style.color = "red";
             statusCell.style.fontWeight = "bold";
         }
@@ -133,7 +137,7 @@ function renderStudentsTable(students) {
 // --- Fungsi Pencarian Siswa ---
 function filterStudents() {
     const searchTerm = searchInputEl.value.toLowerCase();
-    if (!allStudentsData) { // Jika allStudentsData belum terdefinisi (seharusnya tidak terjadi)
+    if (!allStudentsData) { 
         return;
     }
     const filteredStudents = allStudentsData.filter(student =>
@@ -143,18 +147,13 @@ function filterStudents() {
 }
 
 // --- Inisialisasi ---
-let countdownInterval;
-
 async function initializePage() {
     const nowInitial = new Date().getTime();
     if (nowInitial >= targetDate) {
-        await showAnnouncement(); // Tunggu data dimuat dan ditampilkan
+        await showAnnouncement(); 
     } else {
-        // Pra-muat data siswa agar siap saat countdown selesai
-        allStudentsData = await loadAndParseStudentData(studentDataFilePath);
-        // Hanya mulai countdown jika data berhasil dimuat atau ada upaya pemuatan
-        // Tidak menampilkan tabel dulu, hanya memuat data di background.
-        updateCountdown(); // Panggil sekali agar tidak ada delay tampilan awal
+        allStudentsData = await loadAndParseStudentData(studentDataFilePath); // Pra-muat data
+        updateCountdown(); 
         countdownInterval = setInterval(updateCountdown, 1000);
     }
 }

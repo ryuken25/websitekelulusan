@@ -6,22 +6,25 @@ body {
     padding: 20px;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     min-height: 100vh;
     text-align: center;
-    background-image: url("images/image_760dae.png"); /* Opsional: Ganti dengan background Anda jika mau */
-    background-size: cover; /* Atur cara background ditampilkan */
-    background-position: center; /* Posisikan background di tengah */
-    background-repeat: no-repeat; /* Jangan ulangi background */
+    /* background-image: url("images/image_760dae.png"); */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 .container {
-    background-color: rgba(255, 255, 255, 0.9); /* Semi-transparan putih untuk konten */
+    background-color: rgba(255, 255, 255, 0.95);
     padding: 20px 30px;
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     max-width: 800px;
     width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 header {
@@ -35,27 +38,28 @@ header {
     justify-content: center;
     align-items: center;
     margin-bottom: 15px;
+    flex-wrap: wrap;
 }
 
 .logo {
-    height: 80px; /* Sesuaikan ukuran logo */
-    margin: 0 15px;
+    height: 70px;
+    margin: 5px 15px;
 }
 
 header h1 {
-    font-size: 2.5em;
-    color: #0056b3; /* Biru tua */
+    font-size: 2.2em;
+    color: #0056b3;
     margin: 10px 0 5px;
 }
 
 header h2 {
-    font-size: 1.8em;
+    font-size: 1.6em;
     color: #333;
     margin: 5px 0;
 }
 
 header h3 {
-    font-size: 1.2em;
+    font-size: 1.1em;
     color: #555;
     margin: 5px 0 10px;
 }
@@ -68,30 +72,38 @@ header h3 {
 #countdown-timer {
     display: flex;
     justify-content: center;
-    gap: 15px; /* Jarak antar kotak timer */
+    gap: 10px; 
     margin-bottom: 30px;
+    flex-wrap: nowrap; /* << DIUBAH: Mencegah kotak timer turun baris */
+    /* Jika konten tetap terlalu besar dan Anda ingin bisa scroll horizontal timer: */
+    /* overflow-x: auto; */
+    /* padding: 0 5px; */ /* Sedikit padding jika timer menyentuh tepi kontainer */
 }
 
 .timer-box {
-    background-color: #007bff; /* Biru */
+    background-color: #007bff;
     color: white;
-    padding: 15px;
+    padding: 12px;
     border-radius: 8px;
-    min-width: 80px;
+    min-width: 70px; /* Lebar minimal default untuk layar besar */
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    /* margin: 5px; */ /* DIHAPUS: Gunakan 'gap' pada #countdown-timer untuk jarak antar item */
+    text-align: center; /* BARU: Memastikan teks di dalam kotak timer terpusat */
 }
 
-.timer-box span:first-child {
-    font-size: 2.5em;
+.timer-box span:first-child { /* Angka (00, 23, dll.) */
+    font-size: 2em;
     display: block;
     font-weight: bold;
+    line-height: 1.2; /* BARU: Menyesuaikan jarak baris jika angka terlalu tinggi */
 }
 
-.timer-box span:last-child {
-    font-size: 0.9em;
+.timer-box span:last-child { /* Label (Hari, Jam, dll.) */
+    font-size: 0.8em;
     display: block;
     text-transform: uppercase;
-    margin-top: 5px;
+    margin-top: 3px;
+    line-height: 1.2; /* BARU: Menyesuaikan jarak baris */
 }
 
 #announcement-section {
@@ -101,25 +113,32 @@ header h3 {
 #announcement-section h2, #announcement-section h3, #announcement-section h4 {
     color: #0056b3;
 }
+#announcement-section h2 { font-size: 1.8em; }
+#announcement-section h3 { font-size: 1.4em; }
+#announcement-section h4 { font-size: 1.1em; margin-bottom: 15px;}
+
 
 #search-input {
-    width: 80%;
+    width: calc(100% - 22px); 
+    max-width: 400px;
     padding: 10px;
-    margin: 15px 0;
+    margin: 20px auto; 
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 1em;
+    display: block; 
 }
 
 #students-table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    font-size: 0.95em;
 }
 
 #students-table th, #students-table td {
     border: 1px solid #ddd;
-    padding: 10px 12px;
+    padding: 8px 10px; 
     text-align: left;
 }
 
@@ -134,10 +153,11 @@ header h3 {
 }
 
 .note {
-    margin-top: 20px;
+    margin-top: 25px;
     font-style: italic;
     color: #555;
     font-size: 0.9em;
+    line-height: 1.5;
 }
 
 footer {
@@ -148,26 +168,64 @@ footer {
     color: #777;
 }
 
-/* Responsif untuk layar kecil */
+/* Responsif untuk layar kecil (HP) */
 @media (max-width: 600px) {
+    .container {
+        padding: 15px; 
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
     .logo {
-        height: 60px;
+        height: 50px; 
+        margin: 5px 10px;
     }
+
     header h1 {
-        font-size: 2em;
+        font-size: 1.8em; 
     }
+
     header h2 {
-        font-size: 1.5em;
+        font-size: 1.3em; 
     }
+
+     header h3 {
+        font-size: 1em; 
+    }
+
+    /* --- PENYESUAIAN KHUSUS TIMER UNTUK MOBILE --- */
     #countdown-timer {
-        flex-direction: column;
-        gap: 10px;
+        gap: 5px; /* << DIUBAH: Mengurangi jarak antar kotak timer untuk menghemat ruang */
+        /* Pastikan flex-wrap: nowrap; dari gaya umum tidak di-override di sini jika ingin tetap 1 baris */
     }
+
     .timer-box {
-        min-width: 100%; /* Kotak timer memenuhi lebar */
-        padding: 10px;
+        padding: 8px 4px;   /* << DIUBAH: Mengurangi padding (atas/bawah 8px, kiri/kanan 4px) */
+        min-width: 0;       /* << DIUBAH: Membolehkan kotak menyusut lebih kecil dari defaultnya */
+        flex: 1;            /* << DIUBAH: Membuat ke-4 kotak berbagi lebar secara merata */
+        font-size: 0.8em;   /* << DIUBAH: Mengecilkan font dasar di dalam kotak timer */
+                            /* (misal jika font dasar browser 16px, ini jadi sekitar 12.8px) */
     }
-    .timer-box span:first-child {
-        font-size: 2em;
+
+    .timer-box span:first-child { /* Angka */
+        font-size: 1.5em;  /* << DIUBAH: Ukuran font relatif terhadap .timer-box (0.8em * 1.5 = 1.2em dari font root, sekitar 19.2px) */
+        line-height: 1.1;  /* << DIUBAH: Merapatkan jarak baris angka */
+    }
+
+    .timer-box span:last-child { /* Label Hari, Jam, dll. */
+        font-size: 0.85em; /* << DIUBAH: Ukuran font label (0.8em * 0.85 = 0.68em dari font root, sekitar 10.9px) */
+        line-height: 1.1;  /* << DIUBAH: Merapatkan jarak baris label */
+        margin-top: 1px;   /* << DIUBAH: Mengurangi jarak atas label dari angka */
+    }
+    /* --- AKHIR PENYESUAIAN TIMER --- */
+
+    #search-input {
+        font-size: 0.9em; 
+    }
+
+    #students-table th, 
+    #students-table td {
+        padding: 6px 8px; 
+        font-size: 0.9em; 
     }
 }
