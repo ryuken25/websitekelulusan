@@ -1,0 +1,173 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f4f8;
+    color: #333;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    text-align: center;
+    background-image: url("images/image_760dae.png"); /* Opsional: Ganti dengan background Anda jika mau */
+    background-size: cover; /* Atur cara background ditampilkan */
+    background-position: center; /* Posisikan background di tengah */
+    background-repeat: no-repeat; /* Jangan ulangi background */
+}
+
+.container {
+    background-color: rgba(255, 255, 255, 0.9); /* Semi-transparan putih untuk konten */
+    padding: 20px 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    width: 100%;
+}
+
+header {
+    margin-bottom: 30px;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 20px;
+}
+
+.logos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.logo {
+    height: 80px; /* Sesuaikan ukuran logo */
+    margin: 0 15px;
+}
+
+header h1 {
+    font-size: 2.5em;
+    color: #0056b3; /* Biru tua */
+    margin: 10px 0 5px;
+}
+
+header h2 {
+    font-size: 1.8em;
+    color: #333;
+    margin: 5px 0;
+}
+
+header h3 {
+    font-size: 1.2em;
+    color: #555;
+    margin: 5px 0 10px;
+}
+
+#countdown-section p {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+
+#countdown-timer {
+    display: flex;
+    justify-content: center;
+    gap: 15px; /* Jarak antar kotak timer */
+    margin-bottom: 30px;
+}
+
+.timer-box {
+    background-color: #007bff; /* Biru */
+    color: white;
+    padding: 15px;
+    border-radius: 8px;
+    min-width: 80px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.timer-box span:first-child {
+    font-size: 2.5em;
+    display: block;
+    font-weight: bold;
+}
+
+.timer-box span:last-child {
+    font-size: 0.9em;
+    display: block;
+    text-transform: uppercase;
+    margin-top: 5px;
+}
+
+#announcement-section {
+    margin-top: 30px;
+}
+
+#announcement-section h2, #announcement-section h3, #announcement-section h4 {
+    color: #0056b3;
+}
+
+#search-input {
+    width: 80%;
+    padding: 10px;
+    margin: 15px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+#students-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#students-table th, #students-table td {
+    border: 1px solid #ddd;
+    padding: 10px 12px;
+    text-align: left;
+}
+
+#students-table th {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+}
+
+#students-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.note {
+    margin-top: 20px;
+    font-style: italic;
+    color: #555;
+    font-size: 0.9em;
+}
+
+footer {
+    margin-top: 30px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+    font-size: 0.9em;
+    color: #777;
+}
+
+/* Responsif untuk layar kecil */
+@media (max-width: 600px) {
+    .logo {
+        height: 60px;
+    }
+    header h1 {
+        font-size: 2em;
+    }
+    header h2 {
+        font-size: 1.5em;
+    }
+    #countdown-timer {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .timer-box {
+        min-width: 100%; /* Kotak timer memenuhi lebar */
+        padding: 10px;
+    }
+    .timer-box span:first-child {
+        font-size: 2em;
+    }
+}

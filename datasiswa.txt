@@ -1,0 +1,11 @@
+Nama,Status
+Agus Setiawan,Lulus
+Budi Hartono,Lulus
+Cinta Kirana,Tidak Lulus
+Dewi Anggraini,Lulus
+Eko Prasetyo,Lulus
+Farah Nabila,Lulus
+Gilang Ramadhan,LULUS
+Hana Yulia,TIDAK LULUS
+Irfan Maulana,Lulus
+Jihan Putri,Lulus
