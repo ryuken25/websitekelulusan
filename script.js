@@ -1,5 +1,5 @@
 // --- Konfigurasi ---
-const targetDate = new Date(2025, 5, 2, 10, 0, 0).getTime(); // 2 Juni 2025, 10:00:00
+const targetDate = new Date(2025, 4, 2, 10, 0, 0).getTime(); // 2 Juni 2025, 10:00:00
 const studentDataFilePath = 'datasiswa.txt'; // Nama file data siswa
 
 // --- Elemen DOM ---
