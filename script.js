@@ -1,5 +1,5 @@
 // --- Konfigurasi ---
-const targetDate = new Date(2025, 5, 2, 10, 0, 0).getTime(); // 2 Juni 2025, 10:00:00 (Bulan 5 adalah Juni)
+const targetDate = new Date(2025, 5, 2, 9, 0, 0).getTime(); // 2 Juni 2025, 10:00:00 (Bulan 5 adalah Juni)
 const studentDataFilePath = 'datasiswa.txt'; // Nama file data siswa
 
 // --- Elemen DOM ---
