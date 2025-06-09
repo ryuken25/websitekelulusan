@@ -118,9 +118,11 @@ function renderStudentsTable(students) {
         return;
     }
 
-    students.forEach(student => {
+    students.forEach((student, index) => {
         const row = studentsListEl.insertRow();
-        row.insertCell().textContent = student.no;
+        // Gunakan nomor urut berdasarkan posisi saat ini agar tetap berurutan
+        // meskipun data telah difilter oleh fitur pencarian.
+        row.insertCell().textContent = index + 1;
         row.insertCell().textContent = student.name;
         const statusCell = row.insertCell();
         statusCell.textContent = student.status; 
